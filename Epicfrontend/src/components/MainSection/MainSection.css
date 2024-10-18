@@ -1,0 +1,16 @@
+
+
+.container {
+    display: flex;
+}
+
+.card {
+    margin-bottom: 20px;
+}
+
+.comment-section {
+    background-color: #f8f9fa; 
+    padding: 20px; 
+    border-left: 1px solid #ccc; 
+    height: 100%; 
+}

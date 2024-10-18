@@ -1,0 +1,40 @@
+
+
+.custom {
+    box-shadow: 0 15px 80px rgba(34, 35, 58, 0.5);
+    z-index: 2;
+}
+
+
+.selected-border {
+    border: 5px solid red  !important; 
+}
+
+.card-image {
+    height: 250px; 
+    object-fit: cover; 
+    border-top-left-radius: 0.25rem; 
+    border-top-right-radius: 0.25rem; 
+}
+
+.custom-body {
+    padding: 1.5rem; 
+    transition: background-color 0.3s; 
+}
+
+.transition:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); 
+}
+
+.btn-modern {
+    background-color: #007bff; 
+    color: white;
+    border: none;
+    transition: background-color 0.3s, transform 0.3s; 
+}
+
+.btn-modern:hover {
+    background-color: #0056b3; 
+    transform: scale(1.05); 
+}
