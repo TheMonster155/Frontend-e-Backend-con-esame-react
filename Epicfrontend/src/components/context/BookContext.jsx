@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from 'react'
 export const BookContext = createContext()
 
 export const BookContextProvider = ({ children }) => {
-    const [allBooks, setAllBooks] = useState({}) // Rinomina per chiarezza
+    const [allBooks, setAllBooks] = useState([]) //whit this {work} // Rinomina per chiarezza
     const [filteredBooks, setFilteredBooks] = useState([]) // Stato per i libri filtrati
     const [page, setPage] = useState(1)
     const [pageSize, setPageSize] = useState(10)
@@ -26,7 +26,8 @@ export const BookContextProvider = ({ children }) => {
         if (inputValue === '') {
             setFilteredBooks(allBooks) // Ritorna tutti i libri se non ci sono filtri
         } else {
-            const filtered = allBooks?.books?.filter((book) =>
+            const filtered = allBooks.filter((book) =>
+                //allBooks?.books?.filter whit this + {} up
                 book.title.toLowerCase().includes(inputValue.toLowerCase())
             )
             setFilteredBooks(filtered) // Imposta i libri filtrati
