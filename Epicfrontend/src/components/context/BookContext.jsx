@@ -1,25 +1,35 @@
-import { createContext, useState } from 'react'
-import fantasy from '../dataSource/books/fantasy.json'
-import history from '../dataSource/books/history.json'
-import horror from '../dataSource/books/horror.json'
-import romance from '../dataSource/books/romance.json'
-import scifi from '../dataSource/books/scifi.json'
+import { createContext, useEffect, useState } from 'react'
 
 export const BookContext = createContext()
 
 export const BookContextProvider = ({ children }) => {
-    const allBooks = [...fantasy, ...history, ...romance, ...horror, ...scifi]
-    const [books, setBooks] = useState(fantasy)
+    const [allBooks, setAllBooks] = useState([]) // Rinomina per chiarezza
+    const [filteredBooks, setFilteredBooks] = useState([]) // Stato per i libri filtrati
+    const [page, setPage] = useState(1)
+    const [pageSize, setPageSize] = useState(10)
     const [inputValue, setInputValue] = useState('')
+
+    const getBooks = async () => {
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_SERVER_BASE_URL}/books?page=${page}&pageSize=${pageSize}`
+            )
+            const result = await response.json()
+            setAllBooks(result) // Imposta i libri originali
+            setFilteredBooks(result) // Imposta i libri filtrati inizialmente uguali a tutti
+        } catch (error) {
+            console.error(error.message)
+        }
+    }
 
     const filteredBook = () => {
         if (inputValue === '') {
-            setBooks(allBooks)
+            setFilteredBooks(allBooks) // Ritorna tutti i libri se non ci sono filtri
         } else {
-            const filteredBooks = allBooks.filter((book) =>
+            const filtered = allBooks.filter((book) =>
                 book.title.toLowerCase().includes(inputValue.toLowerCase())
             )
-            setBooks(filteredBooks)
+            setFilteredBooks(filtered) // Imposta i libri filtrati
         }
     }
 
@@ -32,9 +42,23 @@ export const BookContextProvider = ({ children }) => {
         filteredBook()
     }
 
+    useEffect(() => {
+        getBooks()
+    }, [page, pageSize])
+
     return (
         <BookContext.Provider
-            value={{ books, inputValue, handleInputChange, handleSubmitForm }}
+            value={{
+                allBooks,
+                filteredBooks, // Fornisci i libri filtrati
+                inputValue,
+                handleInputChange,
+                handleSubmitForm,
+                page,
+                setPage,
+                pageSize,
+                setPageSize,
+            }}
         >
             {children}
         </BookContext.Provider>
