@@ -1,7 +1,7 @@
 const express = require("express");
 const login = express.Router();
 const UsersModel = require("../models/Usersmodel");
-
+const TOKEN = require("../Token/token");
 const isPasswordValid = (userPassword, requestPassword) => {
   if (userPassword === requestPassword) {
     return true;
@@ -19,7 +19,6 @@ login.post("/login", async (request, response) => {
         message: "Utente non trovato con l'email fornita",
       });
     }
-    // se user esiste confronto la password del body con quella presente nello user
     const checkPassword = isPasswordValid(user.password, request.body.password);
     console.log(checkPassword);
     if (!checkPassword) {
@@ -29,14 +28,19 @@ login.post("/login", async (request, response) => {
       });
     }
 
+    console.log("Token value:", TOKEN); // Aggiungi questo log per controllare il valore
+
+    // Invia il token solo nel corpo della risposta
     response.status(200).send({
       statusCode: 200,
-      message: "Ok sei loggato correttamente",
+      message: "sei logato",
+      token: TOKEN,
     });
   } catch (error) {
+    console.error("Error during login:", error); // Logga l'errore
     response.status(500).send({
       statusCode: 500,
-      message: "Ops something went wrong",
+      message: "Ops something went wrong: " + error.message, // Aggiungi il messaggio di errore
     });
   }
 });

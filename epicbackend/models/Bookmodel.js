@@ -27,6 +27,7 @@ const BookSchema = new mongoose.Schema(
       required: false,
       default: "https://placehold.co/600x400",
     },
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "CommentsModel" }],
   },
   { timeseries: true, strict: true }
 );

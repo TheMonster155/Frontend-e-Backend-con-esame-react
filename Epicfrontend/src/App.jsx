@@ -6,8 +6,32 @@ import About from './pages/About/About'
 import BookDay from './pages/BookDay/BookDay'
 import PageError from './pages/PageError/PageError'
 import BookDetails from './pages/BookDetails/BookDetails'
-import Login from './pages/Login/Login'
+
 import { useState } from 'react'
+import { ProtectedRoutes } from './Middwlwers/ProtectRoutes'
+import { Login } from './pages/Login/Login'
+
+const App = () => {
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                {/* Rotte protette */}
+                <Route element={<ProtectedRoutes />}>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/bookDay" element={<BookDay />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/book/:bookId" element={<BookDetails />} />
+                    <Route path="*" element={<PageError />} />
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    )
+}
+
+export default App
+/*
+
 const App = () => {
     const [isLogged, setIsLogged] = useState(false)
 
@@ -35,3 +59,4 @@ const App = () => {
 }
 
 export default App
+*/

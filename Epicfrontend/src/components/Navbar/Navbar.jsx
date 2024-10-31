@@ -22,7 +22,7 @@ const NavbarCustom = () => {
             <Container>
                 <Navbar.Brand>
                     <Link
-                        to="/"
+                        to="/home"
                         style={{ textDecoration: 'none', color: 'inherit' }}
                     >
                         The Book
@@ -57,6 +57,12 @@ const NavbarCustom = () => {
                             <Col xs="auto">
                                 <Button variant="success" type="submit">
                                     Search
+                                </Button>
+                            </Col>
+
+                            <Col xs="auto">
+                                <Button variant="success" type="submit">
+                                    Login
                                 </Button>
                             </Col>
                         </Row>
