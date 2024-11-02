@@ -51,7 +51,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    book: [
+    books: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "booksModel",

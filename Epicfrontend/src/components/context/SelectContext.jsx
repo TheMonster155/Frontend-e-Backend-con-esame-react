@@ -4,8 +4,8 @@ export const SelectContext = createContext()
 
 export const SelectContextProvider = ({ children }) => {
     const [selectAsin, setSelectAsin] = useState(null)
-    const toggleAsin = (asin) => {
-        setSelectAsin((prev) => (prev === asin ? null : asin))
+    const toggleAsin = (_id) => {
+        setSelectAsin((prev) => (prev === _id ? null : _id))
     }
     return (
         <SelectContext.Provider

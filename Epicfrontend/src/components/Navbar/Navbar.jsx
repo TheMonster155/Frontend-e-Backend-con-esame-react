@@ -22,7 +22,7 @@ const NavbarCustom = () => {
             <Container>
                 <Navbar.Brand>
                     <Link
-                        to="/home"
+                        to="/"
                         style={{ textDecoration: 'none', color: 'inherit' }}
                     >
                         The Book

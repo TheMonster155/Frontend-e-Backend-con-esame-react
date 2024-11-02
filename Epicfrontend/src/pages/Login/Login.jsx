@@ -30,7 +30,7 @@ export const Login = () => {
                 const data = await response.json()
                 localStorage.setItem('Auth', JSON.stringify(data))
                 setTimeout(() => {
-                    navigate('/home')
+                    navigate('/')
                 }, 1000)
             } else {
                 const errorData = await response.json()

@@ -140,6 +140,27 @@ const users = express.Router();
 const UserModel = require("../models/Usersmodel");
 const validateUserMiddleware = require("../middlewere/validateUserMiddlewere");
 
+// Ottieni i dettagli dell'utente autenticato
+users.get("/user", async (req, res, next) => {
+  try {
+    const userId = req.userId; // Assumi che `userId` sia impostato tramite autenticazione (ad esempio, token JWT)
+
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: "Utente non trovato",
+      });
+    }
+    res.status(200).send({
+      statusCode: 200,
+      user,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 // Ottieni tutti gli utenti
 users.get("/users", async (req, res, next) => {
   try {

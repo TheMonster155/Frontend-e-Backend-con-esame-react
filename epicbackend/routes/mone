@@ -1,0 +1,42 @@
+{/*
+
+comments.post("/comments/create", async (req, res, next) => {
+  const { rate, comment, user: userId, book: bookId } = req.body;
+
+  try {
+    const user = await Usersmodel.findOne({ _id: userId });
+    const book = await Bookmodel.findOne({ _id: bookId });
+
+    if (!user || !book) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: "User or Book not found",
+      });
+    }
+
+    const newComment = new CommentsModel({
+      comment,
+      rate,
+      user: user._id,
+      book: book._id,
+    });
+
+    const savedComment = await newComment.save();
+
+    await Bookmodel.updateOne(
+      { _id: book._id },
+      { $push: { comments: savedComment._id } }
+    );
+
+    res.status(201).send({
+      statusCode: 201,
+      message: "Comment successfully created",
+      savedComment,
+    });
+  } catch (error) {
+    console.error("Error creating comment:", error);
+    next(error);
+  }
+});
+
+*/}

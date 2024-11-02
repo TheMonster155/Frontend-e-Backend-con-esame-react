@@ -1,85 +1,3 @@
-/*const express = require("express");
-const books = express.Router();
-const BooksModel = require("../models/Bookmodel");
-const isArrayEmpty = require("../utiles/checkArrayLength");
-const menageErrorMessage = require("../utiles/menageErrorMessages");
-const Bookmodel = require("../models/Bookmodel");
-
-books.get("/books", async (req, res) => {
-  const { page, pageSize = 10 } = req.query;
-  try {
-    const books = await BooksModel.find()
-      .limit(pageSize)
-      .skip((page - 1) * pageSize);
-
-    const count = await BooksModel.countDocuments();
-
-    const totalPages = Math.ceil(count / pageSize);
-
-    if (isArrayEmpty(books)) {
-      return res.status(404).send({
-        statusCode: 404,
-        message: "Books not found",
-      });
-    }
-    res.status(200).send({
-      statusCode: 200,
-      message: `Books Found ${books.length}`,
-      count,
-      totalPages,
-      books,
-    });
-  } catch (error) {
-    res.status(500).send({
-      statusCode: 500,
-      message: menageErrorMessage(),
-    });
-  }
-});
-
-books.get("/books/:title", async (req, res) => {
-  const { title } = req.params;
-  const {page= 1, pageSize = 10} = req.query; 
-  if (!title) {
-    return res.status(400).send({
-      statusCode: 400,
-      message: "Title is required",
-    });
-  }
-  try {
-    const foundBooks = await BooksModel.find({ title: {
-      $regex:"*" + title + "*",
-      $options:"i",
-    }})
-    .limit(pageSize)
-    .skip((page-1)*pageSize),
-
-    const count = awit BooksModel.countDocuments({
-      {
-        const foundBooks = await BooksModel.find({ title: {
-          $regex:"*" + title + "*",
-          $options:"i",
-        }
-    })
-
-    if(isArrayEmpty(books)) {
-      return res.status(404).send({
-        statusCode:404,
-        message: "Title not Found"
-      })
-    }
-    
-    }
-    res.status(200).send(foundBooks); // Restituisci l'array di libri trovati
-  } catch (error) {
-    res.status(500).send({
-      statusCode: 500,
-      message: "Oops, something went wrong",
-    });
-  }
-});
-module.exports = books;
-*/
 const express = require("express");
 const books = express.Router();
 const BooksModel = require("../models/Bookmodel");
@@ -88,6 +6,7 @@ const menageErrorMessage = require("../utiles/menageErrorMessages");
 const validateBookBody = require("../middlewere/validateBookBody");
 const upload = require("../middlewere/uploadsMutter");
 const cloud = require("../middlewere/uploadsCloudinary");
+const validateBookId = require("../middlewere/validateBookId"); // Assicurati che il percorso sia corretto
 
 // Route to get paginated books
 books.get("/books", async (req, res, next) => {
@@ -173,38 +92,7 @@ books.get("/books/title/:title", async (req, res, next) => {
 });
 
 // Route to create a new book
-/*
-books.post("/books/create", [validateBookBody], async (req, res) => {
-  const { title, img, price, category, asin } = req.body;
-  if (!title || !asin || !price || !category || !img) {
-    return res.status(400).send({
-      statusCode: 400,
-      message: "Non ce un cazzo",
-    });
-  }
 
-  try {
-    const newBook = new BooksModel({
-      title,
-      img,
-      price,
-      category,
-      asin,
-    });
-    const book = await newBook.save();
-    res.status(201).send({
-      statusCode: 201,
-      message: "Book created successfully",
-      book,
-    });
-  } catch (error) {
-    res.status(500).send({
-      statusCode: 500,
-      message: "Error creating book",
-    });
-  }
-});
-*/
 books.post("/books/create", [validateBookBody], async (req, res, next) => {
   console.log("Dati ricevuti per la creazione del libro:", req.body);
   const { title, img, price, category, asin } = req.body;
@@ -229,9 +117,8 @@ books.post("/books/create", [validateBookBody], async (req, res, next) => {
     next(error);
   }
 });
-
 // Route to get a book by ID
-books.get("/books/id/:id", async (req, res) => {
+books.get("/books/id/:id", validateBookId, async (req, res, next) => {
   const { id } = req.params;
 
   try {
@@ -250,13 +137,9 @@ books.get("/books/id/:id", async (req, res) => {
       book,
     });
   } catch (error) {
-    res.status(500).send({
-      statusCode: 500,
-      message: "Error retrieving book",
-    });
+    next(error); // Pass the error to the error handling middleware
   }
 });
-
 // Route to update a book
 books.patch("/books/update/:id", async (req, res) => {
   const { id } = req.params;
@@ -348,30 +231,3 @@ books.patch("/books/updateModel", async (req, res, next) => {
   }
 });
 module.exports = books;
-
-/*
-books.get("/books/:title", async (req, res) => {
-  const { title } = req.params;
-  if (!title) {
-    return res.status(400).send({
-      statusCode: 400,
-      message: "User ID is required",
-    });
-  }
-  try {
-    const books = await BooksModel.find({ title: title });
-    if (!books) {
-      return res.status(404).send({
-        statusCode: 404,
-        message: "User ID not Found",
-      });
-    }
-    res.status(200).send(books);
-  } catch (error) {
-    res.status(500).send({
-      statusCode: 500,
-      message: "Oops, something went wrong",
-    });
-  }
-});
-*/

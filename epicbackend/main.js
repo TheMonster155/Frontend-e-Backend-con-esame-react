@@ -12,7 +12,6 @@ const requestTimeMiddleware = require("./middlewere/requestTimeMiddleware");
 const blockIpMiddleware = require("./middlewere/blockIpMiddleware");
 const badRequestHandler = require("./middlewere/badRequestHandler");
 const genericErrorHandler = require("./middlewere/generiErroreMiddlewere");
-const comments = require("./routes/comments");
 
 const notAllowIp = process.env.BANNEDIPS
   ? process.env.BANNEDIPS.split(",")

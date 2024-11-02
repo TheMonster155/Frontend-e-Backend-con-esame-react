@@ -1,11 +1,9 @@
 const mongoose = require("mongoose");
-const Usersmodel = require("./Usersmodel");
-const comments = require("../routes/comments");
 
 const commentsModels = new mongoose.Schema(
   {
     user: {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "userModel",
     },
 
@@ -17,9 +15,9 @@ const commentsModels = new mongoose.Schema(
       max: 5,
     },
 
-    Comment: {
+    comment: {
       type: String,
-      require: true,
+      required: true,
     },
     book: {
       type: mongoose.Schema.Types.ObjectId,

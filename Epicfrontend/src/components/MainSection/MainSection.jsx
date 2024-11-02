@@ -85,23 +85,25 @@ const MainSection = () => {
                     {books && books.books
                         ? books.books.map((book) => (
                               <BookCard
-                                  key={book.asin}
+                                  key={book._id}
                                   title={book.title}
                                   price={book.price.$numberDecimal}
                                   category={book.category}
                                   img={book.img}
                                   asin={book.asin}
+                                  _id={book._id}
                               />
                           ))
                         : books &&
                           books.map((book) => (
                               <BookCard
-                                  key={book.asin}
+                                  key={book._id}
                                   title={book.title}
                                   price={book.price.$numberDecimal}
                                   category={book.category}
                                   img={book.img}
                                   asin={book.asin}
+                                  _id={book._id}
                               />
                           ))}
                 </Row>

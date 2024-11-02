@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const ALLOWED_cATEGORIES = ["fantasy", "horror", "scifi", "romance", "history"];
+const ALLOWED_CATEGORIES = ["fantasy", "horror", "scifi", "romance", "history"];
 
 const BookSchema = new mongoose.Schema(
   {
@@ -9,15 +9,13 @@ const BookSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ALLOWED_cATEGORIES,
-      require: true,
+      enum: ALLOWED_CATEGORIES,
+      required: true, // Corretto
     },
-
     price: {
       type: mongoose.Types.Decimal128,
       required: true,
     },
-
     title: {
       type: String,
       required: true,
@@ -29,7 +27,7 @@ const BookSchema = new mongoose.Schema(
     },
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "CommentsModel" }],
   },
-  { timeseries: true, strict: true }
+  { timestamps: true, strict: true } // Corretto
 );
 
 module.exports = mongoose.model("booksModel", BookSchema, "books");

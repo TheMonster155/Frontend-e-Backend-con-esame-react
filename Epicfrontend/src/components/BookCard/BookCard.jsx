@@ -7,18 +7,18 @@ import { SelectContext } from '../context/SelectContext'
 import { useNavigate } from 'react-router-dom'
 import { DarkModeContext } from '../context/DarkModeContext'
 
-const BookCard = ({ price, category, title, img, asin }) => {
+const BookCard = ({ price, category, title, img, asin, _id }) => {
     const { selectAsin, toggleAsin } = useContext(SelectContext)
     const { isDark } = useContext(DarkModeContext)
-    const isSelected = selectAsin === asin
+    const isSelected = selectAsin === _id
     const navigate = useNavigate()
 
     const redirectDetails = () => {
-        navigate(`/book/${asin}`)
+        navigate(`/book/${_id}`)
     }
 
     const toggleIsSelect = () => {
-        toggleAsin(asin)
+        toggleAsin(_id)
         Swal.fire({
             title: `${title}`,
             text: `Hai selezionato "${title}"`,

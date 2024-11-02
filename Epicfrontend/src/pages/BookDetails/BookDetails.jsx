@@ -12,7 +12,91 @@ import AllComments from '../../components/AllCommets/AllComments'
 const BookDetails = () => {
     const { bookId } = useParams() // Prendi l'id del libro dai parametri dell'URL
     const { allBooks: books } = useContext(BookContext) // Usa il contesto per i libri
-    const selectedBook = books?.books?.find((book) => book.asin === bookId) // Trova il libro in base all'ASIN
+    const selectedBook = books?.books?.find((book) => book._id === bookId) // Trova il libro in base all'ASIN
+
+    const { isDark } = useContext(DarkModeContext) // Usa il contesto per la modalità scura
+    const { selectAsin, setSelectAsin } = useContext(SelectContext) // Usa il contesto per la selezione del libro
+
+    // Non abbiamo più bisogno di gestire i commenti qui, dato che AllComments si occupa di questo
+    const ENDPOINTGET = `${import.meta.env.VITE_SERVER_BASE_URL}/comments?bookId=${bookId}` // Nuovo endpoint
+
+    // Usa l'effetto per impostare l'asin selezionato
+    useEffect(() => {
+        setSelectAsin(bookId) // Imposta l'asin del libro selezionato
+    }, [bookId, setSelectAsin])
+
+    return (
+        <>
+            <NavbarCustom />
+            <Container
+                fluid
+                className={`book-details-container ${isDark ? 'bg-dark text-white' : 'bg-light text-dark'}`}
+            >
+                <Row className="justify-content-center">
+                    {selectedBook ? (
+                        <>
+                            <Col sm={6} md={6} lg={5}>
+                                <Card className="book-card shadow-sm">
+                                    <Card.Img
+                                        variant="top"
+                                        src={selectedBook.img}
+                                        className="book-img"
+                                    />
+                                    <Card.Body>
+                                        <Card.Title className="book-title">
+                                            {selectedBook.title}
+                                        </Card.Title>
+                                        <Card.Text>
+                                            <strong>Category:</strong>{' '}
+                                            {selectedBook.category}
+                                        </Card.Text>
+                                        <Card.Text>
+                                            <strong>Price:</strong>{' '}
+                                            {selectedBook.price?.$numberDecimal}
+                                            $
+                                        </Card.Text>
+                                        <Card.Text>
+                                            {selectedBook.description}
+                                        </Card.Text>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                            <Col sm={12} md={6} lg={4}>
+                                <Card className="comments-card shadow-sm">
+                                    <Card.Body>
+                                        <h5 className="comments-title">
+                                            Comments
+                                        </h5>
+                                        <div className="comments-section">
+                                            {selectAsin ? (
+                                                <AllComments _id={selectAsin} />
+                                            ) : (
+                                                <p className="no-comments">
+                                                    No comments available
+                                                </p>
+                                            )}
+                                        </div>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        </>
+                    ) : (
+                        <p>No book selected.</p>
+                    )}
+                </Row>
+            </Container>
+            <Footer />
+        </>
+    )
+}
+
+export default BookDetails
+
+/*
+const BookDetails = () => {
+    const { bookId } = useParams() // Prendi l'id del libro dai parametri dell'URL
+    const { allBooks: books } = useContext(BookContext) // Usa il contesto per i libri
+    const selectedBook = books?.books?.find((book) => book._id === bookId) // Trova il libro in base all'ASIN
 
     const { isDark } = useContext(DarkModeContext) // Usa il contesto per la modalità scura
     const { selectAsin, setSelectAsin } = useContext(SelectContext) // Usa il contesto per la selezione del libro
@@ -90,9 +174,7 @@ const BookDetails = () => {
                                         </h5>
                                         <div className="comments-section">
                                             {selectAsin ? (
-                                                <AllComments
-                                                    asin={selectAsin}
-                                                />
+                                                <AllComments _id={selectAsin} />
                                             ) : (
                                                 <p className="no-comments">
                                                     No comments available
@@ -115,3 +197,4 @@ const BookDetails = () => {
 }
 
 export default BookDetails
+*/

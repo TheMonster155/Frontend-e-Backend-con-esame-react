@@ -5,6 +5,28 @@ const CommentsModel = require("../models/CommentsModels");
 const Bookmodel = require("../models/Bookmodel");
 const Usersmodel = require("../models/Usersmodel");
 
+comments.get("/comments/book/:bookId", async (req, res, next) => {
+  try {
+    const { bookId } = req.params;
+    const bookComment = await CommentsModel.find({
+      book: bookId,
+    }).populate("user");
+    if (bookComment.length === 0) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: "Comment not found",
+      });
+    }
+    res.status(200).send({
+      statusCode: 200,
+      message: "Comment found successfully",
+      comments: bookComment,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 comments.get("/comments", async (req, res, next) => {
   try {
     const allComments = await CommentsModel.find().populate("user book");
@@ -18,77 +40,97 @@ comments.get("/comments", async (req, res, next) => {
     res.status(200).send({
       statusCode: 200,
       message: "Comment found successfully",
-      comments,
+      comments: allComments,
     });
   } catch (error) {
     next(error);
   }
 });
-
 comments.post("/comments/create", async (req, res, next) => {
-  const { rate, comment } = req.body;
-  try {
-    const user = await Usersmodel.findOne({ _id: req.body.user });
-    const book = await Bookmodel.findOne({ id: req.body.book });
+  const { rate, comment, user, book } = req.body;
 
-    const newComments = new CommentsModel({
-      comment,
-      rate,
-      user: user._id,
-      book: book._id,
+  // Controlla se l'ID dell'utente è fornito
+  if (!user) {
+    return res.status(400).send({
+      statusCode: 400,
+      message: "User ID is required.",
     });
+  }
 
-    const savedComment = await newComments.save();
-    await Bookmodel.updateOne(
-      { _id: book._id },
-      { $push: { comments: savedComment } }
-    );
+  // Verifica se l'ID del libro è fornito
+  if (!book) {
+    return res.status(400).send({
+      statusCode: 400,
+      message: "Book ID is required.",
+    });
+  }
+
+  try {
+    const newComment = new CommentsModel({ rate, comment, user, book });
+    const savedComment = await newComment.save();
+
     res.status(201).send({
       statusCode: 201,
-      message: "Comment  successfully  create",
+      message: "Comment created successfully.",
+      comment: savedComment,
     });
   } catch (error) {
-    next(error);
+    console.error("Error creating comment:", error);
+    res.status(500).send({
+      statusCode: 500,
+      message: "Error creating comment.",
+    });
   }
 });
 
 comments.patch("/comments/update/:commentsId", async (req, res, next) => {
-  const { commentId } = req.params;
+  const { commentsId } = req.params; // Cambia da commentId a commentsId per coerenza
 
-  if (!commentId) {
+  if (!commentsId) {
     return res.status(404).send({
       statusCode: 404,
-      message: "Comment not fuond",
+      message: "Comment not found",
     });
   }
 
   try {
-    const commentExist = await CommentsModel.findById(commentId);
+    const commentExist = await CommentsModel.findById(commentsId); // Cambia commentId in commentsId
 
     if (!commentExist) {
       return res.status(404).send({
         statusCode: 404,
-        message: "Comment not fuond",
+        message: "Comment not found",
       });
     }
 
-    res.status(200).send({
-      statusCode: 200,
-      message: "Book updated successfully",
-      book: updatedBook,
-    });
+    const updateCommentData = req.body; // Assicurati di avere i dati di aggiornamento qui
+    const option = { new: true }; // Restituisce il commento aggiornato
 
-    const updateCommentData = req.body;
-    const option = { new: true };
+    // Aggiorna il commento e restituisce il risultato
     const result = await CommentsModel.findByIdAndUpdate(
-      commentid,
+      commentsId,
       updateCommentData,
       option
     );
+
+    // Invia la risposta al client
+    if (result) {
+      res.status(200).send({
+        statusCode: 200,
+        message: "Comment updated successfully",
+        comment: result, // Restituisce il commento aggiornato
+      });
+    } else {
+      res.status(404).send({
+        statusCode: 404,
+        message: "Comment not found",
+      });
+    }
   } catch (error) {
+    console.error("Error updating comment:", error);
     res.status(500).send({
       statusCode: 500,
-      message: "Error updating book",
+      message: "Error updating comment",
     });
   }
 });
