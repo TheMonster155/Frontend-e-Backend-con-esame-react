@@ -139,7 +139,7 @@ const express = require("express");
 const users = express.Router();
 const UserModel = require("../models/Usersmodel");
 const validateUserMiddleware = require("../middlewere/validateUserMiddlewere");
-
+const verificyToken = require("../middlewere/verificyToken");
 // Ottieni i dettagli dell'utente autenticato
 users.get("/user", async (req, res, next) => {
   try {
@@ -162,7 +162,7 @@ users.get("/user", async (req, res, next) => {
 });
 
 // Ottieni tutti gli utenti
-users.get("/users", async (req, res, next) => {
+users.get("/users", [verificyToken], async (req, res, next) => {
   try {
     const usersList = await UserModel.find();
     if (usersList.length === 0) {

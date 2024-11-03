@@ -8,18 +8,20 @@ import PageError from './pages/PageError/PageError'
 import BookDetails from './pages/BookDetails/BookDetails'
 
 import { useState } from 'react'
-import { ProtectedRoutes } from './Middwlwers/ProtectRoutes'
+
 import { Login } from './pages/Login/Login'
+import ProtectedRoutes from './Middwlwers/ProtectRoutes'
 
 const App = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<HomePage />} />
                 <Route path="/about" element={<About />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/" element={<Login />} />
                 {/* Rotte protette */}
+
                 <Route element={<ProtectedRoutes />}>
+                    <Route path="/homepage" element={<HomePage />} />
                     <Route path="/bookDay" element={<BookDay />} />
 
                     <Route path="/book/:bookId" element={<BookDetails />} />

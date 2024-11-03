@@ -1,14 +1,8 @@
 const express = require("express");
 const login = express.Router();
 const UsersModel = require("../models/Usersmodel");
-const TOKEN = require("../Token/token");
-const isPasswordValid = (userPassword, requestPassword) => {
-  if (userPassword === requestPassword) {
-    return true;
-  } else {
-    return false;
-  }
-};
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 login.post("/login", async (request, response) => {
   try {
@@ -19,28 +13,40 @@ login.post("/login", async (request, response) => {
         message: "Utente non trovato con l'email fornita",
       });
     }
-    const checkPassword = isPasswordValid(user.password, request.body.password);
-    console.log(checkPassword);
+
+    const checkPassword = await bcrypt.compare(
+      request.body.password,
+      user.password
+    );
+
     if (!checkPassword) {
-      return response.status(403).send({
-        statusCode: 403,
-        message: "La password non è valida",
+      return response.status(401).send({
+        statusCode: 401,
+        message: "Password or Email not valid",
       });
     }
 
-    console.log("Token value:", TOKEN); // Aggiungi questo log per controllare il valore
+    const userToken = jwt.sign(
+      {
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+        _id: user._id,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "55m" }
+    );
 
-    // Invia il token solo nel corpo della risposta
-    response.status(200).send({
+    response.header("authorization", userToken).status(200).send({
       statusCode: 200,
       message: "sei logato",
-      token: TOKEN,
+      token: userToken,
     });
   } catch (error) {
-    console.error("Error during login:", error); // Logga l'errore
+    console.error("Error during login:", error);
     response.status(500).send({
       statusCode: 500,
-      message: "Ops something went wrong: " + error.message, // Aggiungi il messaggio di errore
+      message: "Ops something went wrong: " + error.message,
     });
   }
 });

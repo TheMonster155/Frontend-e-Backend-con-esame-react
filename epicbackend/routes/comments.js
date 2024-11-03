@@ -48,6 +48,7 @@ comments.get("/comments", async (req, res, next) => {
 });
 comments.post("/comments/create", async (req, res, next) => {
   const { rate, comment, user, book } = req.body;
+  console.log("Request Body:", req.body);
 
   // Controlla se l'ID dell'utente è fornito
   if (!user) {

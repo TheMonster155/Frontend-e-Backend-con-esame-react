@@ -28,9 +28,9 @@ export const Login = () => {
             )
             if (response.ok) {
                 const data = await response.json()
-                localStorage.setItem('Auth', JSON.stringify(data))
+                localStorage.setItem('Auth', JSON.stringify(data.token))
                 setTimeout(() => {
-                    navigate('/')
+                    navigate('/homepage')
                 }, 1000)
             } else {
                 const errorData = await response.json()

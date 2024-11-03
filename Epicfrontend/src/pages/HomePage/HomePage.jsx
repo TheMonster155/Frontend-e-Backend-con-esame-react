@@ -3,7 +3,7 @@ import MainSection from '../../components/MainSection/MainSection'
 import Swal from 'sweetalert2'
 import Footer from '../../components/Footer/Footer'
 import WelcomeSection from '../../components/WelcomeSection/WelcomeSection'
-import { useSession } from '../../Middwlwers/ProtectRoutes'
+import { useSession } from '../../hohcks/useSession'
 
 const HomePage = () => {
     const sweetAlert = () => {
@@ -15,7 +15,8 @@ const HomePage = () => {
         })
     }
 
-    const sessionNavigation = useSession()
+    const session = useSession()
+    console.log(session)
 
     return (
         <>
