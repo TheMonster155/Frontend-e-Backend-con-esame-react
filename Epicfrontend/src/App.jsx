@@ -9,20 +9,23 @@ import BookDetails from './pages/BookDetails/BookDetails'
 
 import { useState } from 'react'
 
-import { Login } from './pages/Login/Login'
 import ProtectedRoutes from './Middwlwers/ProtectRoutes'
+import ContactPage from './pages/Contacts/Contacts'
+import Login from './pages/Login/Login'
 
 const App = () => {
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/about" element={<About />} />
-                <Route path="/" element={<Login />} />
+                <Route path="/" element={<HomePage />} />
+
                 {/* Rotte protette */}
 
                 <Route element={<ProtectedRoutes />}>
-                    <Route path="/homepage" element={<HomePage />} />
+                    <Route path="/login" element={<Login />} />
                     <Route path="/bookDay" element={<BookDay />} />
+                    <Route path="/contact" element={<ContactPage />} />
 
                     <Route path="/book/:bookId" element={<BookDetails />} />
                     <Route path="*" element={<PageError />} />

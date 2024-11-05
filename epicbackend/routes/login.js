@@ -37,11 +37,21 @@ login.post("/login", async (request, response) => {
       { expiresIn: "55m" }
     );
 
-    response.header("authorization", userToken).status(200).send({
-      statusCode: 200,
-      message: "sei logato",
-      token: userToken,
-    });
+    response
+      .header("authorization", userToken)
+      .status(200)
+      .send({
+        statusCode: 200,
+        message: "sei logato",
+        token: userToken,
+        user: {
+          // Aggiungi qui i dati dell'utente
+          name: user.name,
+          surname: user.surname,
+          email: user.email,
+          _id: user._id,
+        },
+      });
   } catch (error) {
     console.error("Error during login:", error);
     response.status(500).send({

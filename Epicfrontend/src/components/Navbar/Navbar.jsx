@@ -2,16 +2,25 @@ import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import { navLinks } from '../dataSource/navData'
-import { Button, Col, Form, Row } from 'react-bootstrap'
-import { useContext } from 'react'
+import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
+import { useContext, useState } from 'react'
 import { BookContext } from '../context/BookContext'
 import { DarkModeContext } from '../context/DarkModeContext'
 import { Link } from 'react-router-dom'
+import Login from '../../pages/Login/Login'
+import { useUserContext } from '../context/UserContext' // Importa il contesto utente
 
 const NavbarCustom = () => {
     const { inputValue, handleInputChange, handleSubmitForm } =
         useContext(BookContext)
     const { isDark } = useContext(DarkModeContext)
+    const { user, login } = useUserContext() // Ottieni user e login dal UserContext
+
+    const [showLoginModal, setShowLoginModal] = useState(false)
+
+    const handleShowLogin = () => setShowLoginModal(true)
+    const handleCloseLogin = () => setShowLoginModal(false)
+
     return (
         <Navbar
             bg={isDark ? 'dark' : 'light'}
@@ -28,7 +37,6 @@ const NavbarCustom = () => {
                         The Book
                     </Link>
                 </Navbar.Brand>
-
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
@@ -42,7 +50,6 @@ const NavbarCustom = () => {
                             </Link>
                         ))}
                     </Nav>
-
                     <Form className="d-inline-flex" onSubmit={handleSubmitForm}>
                         <Row>
                             <Col>
@@ -59,16 +66,35 @@ const NavbarCustom = () => {
                                     Search
                                 </Button>
                             </Col>
-
                             <Col xs="auto">
-                                <Button variant="success" type="submit">
-                                    Login
-                                </Button>
+                                {user ? (
+                                    <h2>{user.name}</h2> // Mostra il nome dell'utente
+                                ) : (
+                                    <Button
+                                        variant="success"
+                                        onClick={handleShowLogin}
+                                    >
+                                        Login
+                                    </Button>
+                                )}
                             </Col>
                         </Row>
                     </Form>
                 </Navbar.Collapse>
             </Container>
+            <Modal show={showLoginModal} onHide={handleCloseLogin}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Login</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Login
+                        onLogin={(userData) => {
+                            login(userData) // Usa la funzione di login dal contesto
+                            handleCloseLogin() // Chiudi il modulo di login
+                        }}
+                    />
+                </Modal.Body>
+            </Modal>
         </Navbar>
     )
 }
