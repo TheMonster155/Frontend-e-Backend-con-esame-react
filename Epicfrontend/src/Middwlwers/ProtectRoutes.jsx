@@ -7,8 +7,11 @@ export const isAuth = () => {
     return JSON.parse(localStorage.getItem('Auth'))
 }
 
+//usare il
+
 const ProtectedRoutes = () => {
     const session = isAuth()
+    // fare un if per le cose piecifiche
 
     return session ? <Outlet /> : <Login />
 }

@@ -7,12 +7,28 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 email.post("/sendEmail", async (req, res) => {
   const { email: userEmail, message } = req.body; // Usa l'email dell'utente dal corpo della richiesta
 
+  //TODO:Esempio come fare il todo
+
+  /*
   const msg = {
     to: userEmail, // L'email inserita dall'utente
     from: "anass.vivaace@hotmail.it", // Email verificata su SendGrid
     subject: "Nuovo messaggio dal modulo di contatto",
     text: `Messaggio: ${message}`, // Messaggio dell'utente
     html: `<p>Messaggio: <strong>${message}</strong></p>`, // Stessa cosa in HTML
+  };
+  */
+  const msg = {
+    to: userEmail, // The email provided by the user
+    from: "anass.vivaace@hotmail.it", // Verified email on SendGrid
+    subject: "New Message from the Contact Form",
+    text: `Your message has been received:\n\n${message}\n\nWe will respond as soon as possible.`, // User's message
+    html: `
+      <p>Your message has been received.</p>
+      <p>Here's what you wrote:</p>
+      <p><strong>${message}</strong></p>
+      <p>We will respond as soon as possible.</p>
+    `, // Same thing in HTML
   };
 
   try {

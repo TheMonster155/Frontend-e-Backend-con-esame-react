@@ -19,16 +19,17 @@ const App = () => {
             <Routes>
                 <Route path="/about" element={<About />} />
                 <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="*" element={<PageError />} />
+                <Route path="/homepage" element={<Navigate to="/" />} />
 
                 {/* Rotte protette */}
 
                 <Route element={<ProtectedRoutes />}>
-                    <Route path="/login" element={<Login />} />
                     <Route path="/bookDay" element={<BookDay />} />
                     <Route path="/contact" element={<ContactPage />} />
 
                     <Route path="/book/:bookId" element={<BookDetails />} />
-                    <Route path="*" element={<PageError />} />
                 </Route>
             </Routes>
         </BrowserRouter>
