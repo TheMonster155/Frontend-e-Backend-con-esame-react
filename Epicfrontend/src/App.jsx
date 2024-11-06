@@ -12,6 +12,7 @@ import { useState } from 'react'
 import ProtectedRoutes from './Middwlwers/ProtectRoutes'
 import ContactPage from './pages/Contacts/Contacts'
 import Login from './pages/Login/Login'
+import SuccessLogin from './pages/SuccessLogin/SuccessLogin'
 
 const App = () => {
     return (
@@ -28,7 +29,7 @@ const App = () => {
                 <Route element={<ProtectedRoutes />}>
                     <Route path="/bookDay" element={<BookDay />} />
                     <Route path="/contact" element={<ContactPage />} />
-
+                    <Route path="/success" element={<SuccessLogin />} />
                     <Route path="/book/:bookId" element={<BookDetails />} />
                 </Route>
             </Routes>
@@ -37,33 +38,3 @@ const App = () => {
 }
 
 export default App
-/*
-
-const App = () => {
-    const [isLogged, setIsLogged] = useState(false)
-
-    const handleLogin = () => {
-        setIsLogged(true)
-    }
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route
-                    path="/"
-                    element={isLogged ? <HomePage /> : <Navigate to="/login" />}
-                />
-                <Route
-                    path="/login"
-                    element={<Login onlogin={handleLogin} />}
-                />
-                <Route path="/bookDay" element={<BookDay />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/book/:bookId" element={<BookDetails />} />
-                <Route path="*" element={<PageError />} />
-            </Routes>
-        </BrowserRouter>
-    )
-}
-
-export default App
-*/

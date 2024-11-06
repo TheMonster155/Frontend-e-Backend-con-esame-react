@@ -76,6 +76,7 @@ import { isTokenExpired } from '../utiles/verifyToken'
 
 export const useSession = () => {
     const session = isAuth()
+    console.log(session)
     let decodedSession = null
 
     if (session && session.token) {

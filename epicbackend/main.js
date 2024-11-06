@@ -13,7 +13,7 @@ const blockIpMiddleware = require("./middlewere/blockIpMiddleware");
 const badRequestHandler = require("./middlewere/badRequestHandler");
 const genericErrorHandler = require("./middlewere/generiErroreMiddlewere");
 const emailRoute = require("./routes/sendEmail");
-
+const googleRoute = require("./routes/google");
 const notAllowIp = process.env.BANNEDIPS
   ? process.env.BANNEDIPS.split(",")
   : [];
@@ -32,8 +32,8 @@ server.use("/", usersRoute);
 server.use("/", loginRoute);
 server.use("/", booksRoute);
 server.use("/", CommentsRoute);
-server.use("/", emailRoute); // Usare il router email
-
+server.use("/", emailRoute);
+server.use("/", googleRoute);
 server.use(badRequestHandler);
 server.use(routeNotFoundMiddleWare);
 server.use(genericErrorHandler);

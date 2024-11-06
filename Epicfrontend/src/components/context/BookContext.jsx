@@ -144,7 +144,11 @@ export const BookContextProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        if (!inputValue.trim()) getBooks()
+        if (inputValue.trim().toLocaleLowerCase() === '') {
+            getBooks()
+        } else {
+            searchBookTitle()
+        }
     }, [page, pageSize, inputValue])
 
     return (
