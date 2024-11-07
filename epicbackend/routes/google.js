@@ -70,6 +70,7 @@ google.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/" }),
   (req, res) => {
+    console.log("Google callback hit");
     const user = req.user;
     if (!user) {
       return res.redirect("/");

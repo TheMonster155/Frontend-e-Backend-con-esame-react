@@ -33,20 +33,26 @@ const ProtectedRoutes = () => {
 }
 export default ProtectedRoutes
 */
-
 import jwtDecode from 'jwt-decode'
-import { Outlet } from 'react-router-dom'
-import Login from '../pages/Login/Login'
+import { Outlet, Navigate } from 'react-router-dom'
 
 export const isAuth = () => {
-    const storedSession = localStorage.getItem('Auth')
+    const storedSession = localStorage.getItem('auth') // Verifica il nome corretto della chiave
     if (storedSession) {
         try {
-            const session = JSON.parse(storedSession) // Log del session storage
-            console.log('Stored Session:', session)
-            return session
+            const token = JSON.parse(storedSession) // Estrai il token
+            const decodedToken = jwtDecode(token) // Decodifica il token
+
+            // Verifica se il token è scaduto
+            if (decodedToken.exp * 1000 < Date.now()) {
+                console.log('Token scaduto')
+                return null // Il token è scaduto, quindi l'utente non è autenticato
+            }
+
+            console.log('Token valido:', decodedToken)
+            return decodedToken // Ritorna il token decodificato
         } catch (error) {
-            console.error('Errore nel parsing della sessione:', error)
+            console.error('Errore nel parsing del token:', error)
             return null
         }
     }
@@ -58,7 +64,8 @@ const ProtectedRoutes = () => {
 
     console.log('Is user authenticated:', session) // Log del controllo di autenticazione
 
-    return session ? <Outlet /> : <Login />
+    // Se l'utente è autenticato, permetti il rendering dell'outlet, altrimenti reindirizza al login
+    return session ? <Outlet /> : <Navigate to="/login" />
 }
 
 export default ProtectedRoutes
