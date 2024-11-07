@@ -18,7 +18,7 @@ const notAllowIp = process.env.BANNEDIPS
   ? process.env.BANNEDIPS.split(",")
   : [];
 
-const PORT = 3061;
+const PORT = process.env.PORT || 3061;
 
 const server = express();
 

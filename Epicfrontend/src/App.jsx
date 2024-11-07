@@ -23,13 +23,14 @@ const App = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="*" element={<PageError />} />
                 <Route path="/homepage" element={<Navigate to="/" />} />
+                <Route path="/success" element={<SuccessLogin />} />
 
                 {/* Rotte protette */}
 
                 <Route element={<ProtectedRoutes />}>
                     <Route path="/bookDay" element={<BookDay />} />
                     <Route path="/contact" element={<ContactPage />} />
-                    <Route path="/success" element={<SuccessLogin />} />
+
                     <Route path="/book/:bookId" element={<BookDetails />} />
                 </Route>
             </Routes>

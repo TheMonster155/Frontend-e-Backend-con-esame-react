@@ -45,7 +45,6 @@ login.post("/login", async (request, response) => {
         message: "sei logato",
         token: userToken,
         user: {
-          // Aggiungi qui i dati dell'utente
           name: user.name,
           surname: user.surname,
           email: user.email,

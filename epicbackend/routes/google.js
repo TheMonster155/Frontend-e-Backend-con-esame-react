@@ -5,7 +5,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const google = express.Router();
 require("dotenv").config();
 const UserModel = require("../models/Usersmodel");
-
+const jwt = require("jsonwebtoken");
 google.use(
   session({
     secret: process.env.GOOGLE_CLIENT_SECRET,
@@ -75,9 +75,18 @@ google.get(
       return res.redirect("/");
     }
 
+    // Genera il token JWT utilizzando il pacchetto già importato e la tua configurazione
+    const userToken = jwt.sign(
+      { userId: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    // Reindirizza al frontend con il token
     const redirectUrl = `${
       process.env.FRONTEND_URL
-    }/success?user=${encodeURIComponent(JSON.stringify(user))}`;
+    }/success?token=${encodeURIComponent(userToken)}`;
+    console.log("Token:", userToken); // Debug per vedere se il token è stato generato correttamente
     res.redirect(redirectUrl);
   }
 );

@@ -1,4 +1,4 @@
-/*import jwtDecode from 'jwt-decode'
+import jwtDecode from 'jwt-decode'
 import { useEffect } from 'react'
 import { isAuth } from '../Middwlwers/ProtectRoutes'
 import { useNavigate } from 'react-router-dom'
@@ -17,7 +17,6 @@ export const useSession = () => {
     }, [navigate, session])
     return decodedSession
 }
-*/
 
 /*
 dove era prima
@@ -67,21 +66,21 @@ export const useSession = () => {
     
 }
 */
-
+/*
 import jwtDecode from 'jwt-decode'
 import { useEffect } from 'react'
 import { isAuth } from '../Middwlwers/ProtectRoutes'
 import { useNavigate } from 'react-router-dom'
 import { isTokenExpired } from '../utiles/verifyToken'
-
 export const useSession = () => {
     const session = isAuth()
-    console.log(session)
+    console.log('Session:', session)
     let decodedSession = null
 
     if (session && session.token) {
         try {
             decodedSession = jwtDecode(session.token)
+            console.log('Decoded session:', decodedSession)
         } catch (error) {
             console.error('Errore durante la decodifica del token:', error)
         }
@@ -94,14 +93,11 @@ export const useSession = () => {
     }
 
     useEffect(() => {
-        if (
-            !session ||
-            (decodedSession &&
-                isTokenExpired(decodedSession.exp, () => navigate('/')))
-        ) {
+        if (!session || !decodedSession || isTokenExpired(decodedSession.exp)) {
             navigateToHome()
         }
     }, [navigate, session, decodedSession])
 
     return decodedSession
 }
+*/
