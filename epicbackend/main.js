@@ -1,3 +1,4 @@
+const PORT = process.env.PORT || 3061;
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -17,8 +18,6 @@ const googleRoute = require("./routes/google");
 const notAllowIp = process.env.BANNEDIPS
   ? process.env.BANNEDIPS.split(",")
   : [];
-
-const PORT = process.env.PORT || 3061;
 
 const server = express();
 
