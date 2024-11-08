@@ -7,8 +7,8 @@ import { useContext, useState } from 'react'
 import { BookContext } from '../context/BookContext'
 import { DarkModeContext } from '../context/DarkModeContext'
 import { Link } from 'react-router-dom'
-import Login from '../../pages/Login/Login'
 import { useUserContext } from '../context/UserContext'
+import LoginForm from '../../pages/Login/Login'
 
 const NavbarCustom = () => {
     const { inputValue, handleInputChange, handleSubmitForm } =
@@ -77,14 +77,12 @@ const NavbarCustom = () => {
                             </Col>
                             <Col xs="auto">
                                 {user ? (
-                                    <>
-                                        <h2
-                                            onClick={handleShowLogout}
-                                            style={{ cursor: 'pointer' }}
-                                        >
-                                            {user.name}
-                                        </h2>
-                                    </>
+                                    <h2
+                                        onClick={handleShowLogout}
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        {user.name}
+                                    </h2>
                                 ) : (
                                     <Button
                                         variant="success"
@@ -109,7 +107,7 @@ const NavbarCustom = () => {
                     <Modal.Title>Login</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Login
+                    <LoginForm
                         onLogin={(userData) => {
                             login(userData)
                             handleCloseLogin()
