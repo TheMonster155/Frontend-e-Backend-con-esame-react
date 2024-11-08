@@ -18,16 +18,11 @@ google.use(passport.initialize());
 google.use(passport.session());
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, user);
 });
 
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await UserModel.findById(id);
-    done(null, user);
-  } catch (err) {
-    done(err, null);
-  }
+passport.deserializeUser((user, done) => {
+  done(null, user);
 });
 
 passport.use(
@@ -38,25 +33,7 @@ passport.use(
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
-      try {
-        let user = await UserModel.findOne({ email: profile.emails[0].value });
-
-        if (!user) {
-          user = await UserModel.create({
-            googleId: profile.id,
-            email: profile.emails[0].value,
-            name: profile.name.givenName,
-            surname: profile.name.familyName,
-            username: profile.displayName || profile.name.givenName,
-            dob: new Date(),
-            password: "123456789",
-          });
-        }
-
-        done(null, user);
-      } catch (error) {
-        done(error, null);
-      }
+      return done(null, profile);
     }
   )
 );
@@ -68,6 +45,7 @@ google.get(
 
 google.get(
   "/auth/google/callback",
+
   passport.authenticate("google", { failureRedirect: "/" }),
   (req, res) => {
     const user = req.user;
