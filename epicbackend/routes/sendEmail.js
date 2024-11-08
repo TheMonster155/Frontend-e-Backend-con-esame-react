@@ -5,7 +5,7 @@ const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 email.post("/sendEmail", async (req, res) => {
-  const { email: userEmail, message } = req.body; // Usa l'email dell'utente dal corpo della richiesta
+  const { email: userEmail, message } = req.body;
 
   //TODO:Esempio come fare il todo
 

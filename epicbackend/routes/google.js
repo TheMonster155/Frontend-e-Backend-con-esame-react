@@ -75,6 +75,7 @@ google.get(
       return res.redirect("/");
     }
 
+    // Reindirizza al frontend con i dettagli dell'utente come parametro 'user' nell'URL
     const redirectUrl = `${
       process.env.FRONTEND_URL
     }/success?user=${encodeURIComponent(JSON.stringify(user))}`;

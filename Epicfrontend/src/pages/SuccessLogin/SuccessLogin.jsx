@@ -26,7 +26,7 @@ const SuccessLogin = () => {
 
 export default SuccessLogin
 */
-
+/*
 import { useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 
@@ -46,7 +46,7 @@ const SuccessLogin = () => {
 
                 // Imposta un timeout prima del reindirizzamento
                 setTimeout(() => {
-                    navigate('/homepage')
+                    navigate('/')
                 }, 1000)
             } catch (error) {
                 console.error('Errore nel salvataggio del token:', error)
@@ -60,6 +60,43 @@ const SuccessLogin = () => {
     return (
         <div>
             <h1>Login Effettuato con successo</h1>
+        </div>
+    )
+}
+
+export default SuccessLogin
+*/
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+
+const SuccessLogin = () => {
+    const [user, setUser] = useState(null)
+    const location = useLocation()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search)
+        const userParam = queryParams.get('user')
+        if (userParam) {
+            setUser(JSON.parse(decodeURIComponent(userParam)))
+        }
+    }, [location])
+
+    useEffect(() => {
+        if (user) {
+            // Quando l'utente è stato caricato, fai il redirect alla homepage
+            navigate('/homepage')
+        }
+    }, [user, navigate])
+
+    if (!user) {
+        return <div>Caricamento...</div>
+    }
+
+    return (
+        <div>
+            <h1>Benvenuto, {user.name}</h1>
+            {/* Altri dettagli dell'utente */}
         </div>
     )
 }
