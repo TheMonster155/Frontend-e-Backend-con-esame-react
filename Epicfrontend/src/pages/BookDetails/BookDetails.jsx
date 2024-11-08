@@ -8,7 +8,7 @@ import Footer from '../../components/Footer/Footer'
 import { useUserContext } from '../../components/context/UserContext'
 import AllComments from '../../components/AllCommets/AllComments'
 import { SelectContext } from '../../components/context/SelectContext'
-
+//TODO: fare in modo se uttente non a il login puo vedere solo i commenti
 const BookDetails = () => {
     const { bookId } = useParams()
     const { allBooks: books } = useContext(BookContext)

@@ -8,6 +8,7 @@ email.post("/sendEmail", async (req, res) => {
   const { email: userEmail, message } = req.body;
 
   //TODO:Esempio come fare il todo
+  // cambiare l erroere, che specifica utennte gia registrato
 
   /*
   const msg = {

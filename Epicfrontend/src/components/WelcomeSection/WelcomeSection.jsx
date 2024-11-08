@@ -3,16 +3,17 @@ import { useContext, useEffect, useState } from 'react'
 import './WelcomeSection.css'
 import { DarkModeContext } from '../context/DarkModeContext'
 import { BookContext } from '../context/BookContext'
-
+//TODO: dettagli aggiugere o togiere
 const WelcomeSection = ({ sweetAlert }) => {
     const { allBooks: books } = useContext(BookContext)
     const { isDark } = useContext(DarkModeContext)
     const [randomBook, setRandomBook] = useState(null)
 
     useEffect(() => {
-        const randomIndex = Math.floor(Math.random() * books.books.length)
-
-        setRandomBook(books.books[randomIndex])
+        if (books?.books && books.books.length > 0) {
+            const randomIndex = Math.floor(Math.random() * books.books.length)
+            setRandomBook(books.books[randomIndex])
+        }
     }, [books.books])
 
     return (

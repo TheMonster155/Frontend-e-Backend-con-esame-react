@@ -66,12 +66,13 @@ const App = () => {
             {/* Avvolge l'applicazione con CartProvider */}
             <BrowserRouter>
                 <Routes>
+                    <Route exact path="/" element={<HomePage />} />
                     <Route path="/about" element={<About />} />
-                    <Route path="/" element={<HomePage />} />
+
                     <Route path="/login" element={<Login />} />
-                    <Route path="*" element={<PageError />} />
+
                     <Route path="/homepage" element={<Navigate to="/" />} />
-                    <Route path="/success" element={<SuccessLogin />} />
+                    <Route path="/success/:token" element={<SuccessLogin />} />
 
                     {/* Rotte protette */}
                     <Route element={<ProtectedRoutes />}>
@@ -80,6 +81,7 @@ const App = () => {
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/book/:bookId" element={<BookDetails />} />
                     </Route>
+                    <Route path="*" element={<PageError />} />
                 </Routes>
             </BrowserRouter>
         </CartProvider>

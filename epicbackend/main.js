@@ -12,7 +12,7 @@ const routeNotFoundMiddleWare = require("./middlewere/requestTimeMiddleware");
 const requestTimeMiddleware = require("./middlewere/requestTimeMiddleware");
 const blockIpMiddleware = require("./middlewere/blockIpMiddleware");
 const badRequestHandler = require("./middlewere/badRequestHandler");
-const genericErrorHandler = require("./middlewere/generiErroreMiddlewere");
+//const genericErrorHandler = require("./middlewere/generiErroreMiddlewere");
 const emailRoute = require("./routes/sendEmail");
 const googleRoute = require("./routes/google");
 const productsBuy = require("./routes/productsBuy");
@@ -22,12 +22,25 @@ const notAllowIp = process.env.BANNEDIPS
   : [];
 
 const server = express();
+require("dotenv").config();
+console.log("Variabili di ambiente caricate:", {
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+  GOOGLE_CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL,
+});
 
 server.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 server.use("/", productsBuy);
 server.use("/", stripe);
 server.use(express.json());
-server.use(cors());
+server.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  })
+);
+
+//server.use(cors());
 //server.use(blockIpMiddleware);
 server.use(requestTimeMiddleware);
 server.use("/", usersRoute);
@@ -38,7 +51,7 @@ server.use("/", emailRoute);
 server.use("/", googleRoute);
 server.use(badRequestHandler);
 server.use(routeNotFoundMiddleWare);
-server.use(genericErrorHandler);
+//server.use(genericErrorHandler);
 
 init();
 

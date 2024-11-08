@@ -110,6 +110,13 @@ const NavbarCustom = () => {
                     <LoginForm
                         onLogin={(userData) => {
                             login(userData)
+                            handleCloseLogin() // Chiudi il modale dopo il login
+                        }}
+                        handleCloseLogin={handleCloseLogin} // Passa la funzione di chiusura
+                    />
+                    <LoginForm
+                        onLogin={(userData) => {
+                            login(userData)
                             handleCloseLogin()
                         }}
                     />
@@ -142,3 +149,7 @@ const NavbarCustom = () => {
 }
 
 export default NavbarCustom
+
+/*
+
+*/

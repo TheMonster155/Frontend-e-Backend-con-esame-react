@@ -319,9 +319,9 @@ const AllComments = ({ _id }) => {
 
         setIsSubmitting(true)
 
-        const token = localStorage.getItem('Auth') // Assicurati che il token sia nel local storage
+        const token = localStorage.getItem('Auth')
         const decodedToken = token ? jwtDecode(token) : null
-        const currentUserId = decodedToken ? decodedToken._id : '' // Estrai l'ID utente dal token
+        const currentUserId = decodedToken ? decodedToken._id : ''
 
         const endpoint = modalFormState.id
             ? `${import.meta.env.VITE_SERVER_BASE_URL}/comments/update/${modalFormState.id}`

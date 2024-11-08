@@ -5,7 +5,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const google = express.Router();
 require("dotenv").config();
 const UserModel = require("../models/Usersmodel");
-
+const jwt = require("jsonwebtoken");
 google.use(
   session({
     secret: process.env.GOOGLE_CLIENT_SECRET,
@@ -71,14 +71,14 @@ google.get(
   passport.authenticate("google", { failureRedirect: "/" }),
   (req, res) => {
     const user = req.user;
+    const googleToken = jwt.sign(user, process.env.JWT_SECRET);
     if (!user) {
       return res.redirect("/");
     }
 
-    // Reindirizza al frontend con i dettagli dell'utente come parametro 'user' nell'URL
     const redirectUrl = `${
       process.env.FRONTEND_URL
-    }/success?user=${encodeURIComponent(JSON.stringify(user))}`;
+    }/success?token=${encodeURIComponent(JSON.stringify(googleToken))}`;
     res.redirect(redirectUrl);
   }
 );
