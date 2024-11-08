@@ -50,9 +50,6 @@ google.get(
   (req, res) => {
     const user = req.user;
     const googleToken = jwt.sign(user, process.env.JWT_SECRET);
-    if (!user) {
-      return res.redirect("/");
-    }
 
     const redirectUrl = `${
       process.env.FRONTEND_URL
