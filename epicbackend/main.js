@@ -33,12 +33,7 @@ server.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 server.use("/", productsBuy);
 server.use("/", stripe);
 server.use(express.json());
-server.use(
-  cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true,
-  })
-);
+server.use(cors());
 
 //server.use(cors());
 //server.use(blockIpMiddleware);
