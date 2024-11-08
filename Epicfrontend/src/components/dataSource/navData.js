@@ -3,4 +3,5 @@ export const navLinks = [
     { to: '/about', text: 'About' },
     { to: '/bookDay', text: 'Book of the Day' },
     { to: '/contact', text: 'Contact' },
+    { to: '/card', text: 'Buy' },
 ]

@@ -15,6 +15,8 @@ const badRequestHandler = require("./middlewere/badRequestHandler");
 const genericErrorHandler = require("./middlewere/generiErroreMiddlewere");
 const emailRoute = require("./routes/sendEmail");
 const googleRoute = require("./routes/google");
+const productsBuy = require("./routes/productsBuy");
+const stripe = require("./routes/stripe");
 const notAllowIp = process.env.BANNEDIPS
   ? process.env.BANNEDIPS.split(",")
   : [];
@@ -22,7 +24,8 @@ const notAllowIp = process.env.BANNEDIPS
 const server = express();
 
 server.use("/uploads", express.static(path.join(__dirname, "/uploads")));
-
+server.use("/", productsBuy);
+server.use("/", stripe);
 server.use(express.json());
 server.use(cors());
 //server.use(blockIpMiddleware);
