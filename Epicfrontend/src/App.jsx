@@ -42,6 +42,61 @@ const App = () => {
 
 export default App
 */
+/*
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './App.css'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import HomePage from './pages/HomePage/HomePage'
+import About from './pages/About/About'
+import BookDay from './pages/BookDay/BookDay'
+import PageError from './pages/PageError/PageError'
+import BookDetails from './pages/BookDetails/BookDetails'
+import ContactPage from './pages/Contacts/Contacts'
+import Login from './pages/Login/Login'
+
+import Cart from './pages/Card/Card'
+
+import ProtectedRoutes from './Middwlwers/ProtectRoutes'
+import { CartProvider } from './components/context/CardContext' // Importa CartProvider
+import GithubRedirect from './pages/GithubRedirect/GithubRedirect'
+
+const App = () => {
+    return (
+        <CartProvider>
+           
+            <BrowserRouter>
+                <Routes>
+                    <Route exact path="/" element={<HomePage />} />
+                    <Route path="/about" element={<About />} />
+
+                    <Route path="/login" element={<Login />} />
+
+                    <Route path="/homepage" element={<Navigate to="/" />} />
+               
+                    <Route
+                        path="/success/:token"
+                        element={<GithubRedirect />}
+                    />
+
+                    <Route element={<ProtectedRoutes />}>
+                        <Route path="/card" element={<Cart />} />
+                        <Route path="/bookDay" element={<BookDay />} />
+                        <Route path="/contact" element={<ContactPage />} />
+                        <Route path="/book/:bookId" element={<BookDetails />} />
+                    </Route>
+                    <Route path="*" element={<PageError />} />
+                </Routes>
+            </BrowserRouter>
+        </CartProvider>
+    )
+}
+
+export default App
+*/
+{
+    /* <Route path="/success/:token" element={<SuccessLogin />} />
+                   import SuccessLogin from './pages/SuccessLogin/SuccessLogin'*/
+}
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
@@ -53,38 +108,47 @@ import PageError from './pages/PageError/PageError'
 import BookDetails from './pages/BookDetails/BookDetails'
 import ContactPage from './pages/Contacts/Contacts'
 import Login from './pages/Login/Login'
-import SuccessLogin from './pages/SuccessLogin/SuccessLogin'
 import Cart from './pages/Card/Card'
-
 import ProtectedRoutes from './Middwlwers/ProtectRoutes'
-import { CartProvider } from './components/context/CardContext' // Importa CartProvider
+import { CartProvider } from './components/context/CardContext'
+import GithubRedirect from './pages/GithubRedirect/GithubRedirect'
 
 const App = () => {
     return (
-        <CartProvider>
-            {' '}
-            {/* Avvolge l'applicazione con CartProvider */}
-            <BrowserRouter>
-                <Routes>
-                    <Route exact path="/" element={<HomePage />} />
-                    <Route path="/about" element={<About />} />
+        <BrowserRouter>
+            <Routes>
+                {/* Wrappa solo le rotte HomePage e BookDetails con CartProvider */}
+                <Route
+                    exact
+                    path="/"
+                    element={
+                        <CartProvider>
+                            <HomePage />
+                        </CartProvider>
+                    }
+                />
+                <Route path="/about" element={<About />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/homepage" element={<Navigate to="/" />} />
+                <Route path="/success" element={<GithubRedirect />} />
 
-                    <Route path="/login" element={<Login />} />
-
-                    <Route path="/homepage" element={<Navigate to="/" />} />
-                    <Route path="/success/:token" element={<SuccessLogin />} />
-
-                    {/* Rotte protette */}
-                    <Route element={<ProtectedRoutes />}>
-                        <Route path="/card" element={<Cart />} />
-                        <Route path="/bookDay" element={<BookDay />} />
-                        <Route path="/contact" element={<ContactPage />} />
-                        <Route path="/book/:bookId" element={<BookDetails />} />
-                    </Route>
-                    <Route path="*" element={<PageError />} />
-                </Routes>
-            </BrowserRouter>
-        </CartProvider>
+                {/* Rotte protette */}
+                <Route element={<ProtectedRoutes />}>
+                    <Route path="/card" element={<Cart />} />
+                    <Route path="/bookDay" element={<BookDay />} />
+                    <Route path="/contact" element={<ContactPage />} />
+                    <Route
+                        path="/book/:bookId"
+                        element={
+                            <CartProvider>
+                                <BookDetails />
+                            </CartProvider>
+                        }
+                    />
+                </Route>
+                <Route path="*" element={<PageError />} />
+            </Routes>
+        </BrowserRouter>
     )
 }
 

@@ -70,10 +70,10 @@ const Login = ({ onLogin, handleCloseLogin }) => {
     }
 */
     const redirectToGoogle = () => {
-        window.location.href = `${import.meta.env.VITE_SERVER_BASE_URL}/auth/google/callback`
+        window.location.href = `${import.meta.env.VITE_SERVER_BASE_URL}/auth/google`
     }
     const redirectToGithub = () => {
-        window.location.href = `${import.meta.env.VITE_SERVER_BASE_URL}/auth/github`
+        window.location.href = `${import.meta.env.VITE_SERVER_BASE_URL}/auth/github/`
     }
 
     return (

@@ -34,6 +34,7 @@ const SuccessLogin = () => {
 export default SuccessLogin
 */
 
+/*
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
@@ -72,4 +73,33 @@ const SuccessLogin = () => {
     )
 }
 
+export default SuccessLogin
+*/
+
+import { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+
+const SuccessLogin = () => {
+    const { token } = useParams()
+    const navigate = useNavigate()
+
+    console.log(token)
+
+    useEffect(() => {
+        if (token) {
+            const decodedToken = JSON.parse(token)
+            localStorage.setItem('auth', JSON.stringify(token))
+            setTimeout(() => {
+                navigate('/')
+            }, 5000)
+        }
+    }, [token, navigate])
+    return (
+        <div className="container">
+            <div className="row">
+                <div className="col">ti sei loggato</div>
+            </div>
+        </div>
+    )
+}
 export default SuccessLogin

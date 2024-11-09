@@ -1,4 +1,4 @@
-/*const express = require("express");
+const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
@@ -43,7 +43,7 @@ google.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["email", "profile"] })
 );
-
+/*
 google.get(
   "/auth/google/callback",
 
@@ -57,11 +57,24 @@ google.get(
     }/success?token=${encodeURIComponent(JSON.stringify(googleToken))}`;
     res.redirect(redirectUrl);
   }
+);*/
+google.get(
+  "/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/" }),
+  (req, res) => {
+    const user = req.user;
+    const googleToken = jwt.sign(user, process.env.JWT_SECRET);
+
+    // Non convertire in JSON, passalo come stringa
+    const redirectUrl = `${process.env.FRONTEND_URL}/success?token=${googleToken}`;
+    res.redirect(redirectUrl);
+  }
 );
 
 module.exports = google;
-*/
 
+/*
+fatto com marco
 const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
@@ -140,3 +153,4 @@ google.get(
 );
 
 module.exports = google;
+*/
