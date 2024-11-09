@@ -15,6 +15,7 @@ const badRequestHandler = require("./middlewere/badRequestHandler");
 //const genericErrorHandler = require("./middlewere/generiErroreMiddlewere");
 const emailRoute = require("./routes/sendEmail");
 const googleRoute = require("./routes/google");
+const githubRoute = require("./routes/gitHub");
 const productsBuy = require("./routes/productsBuy");
 const stripe = require("./routes/stripe");
 const notAllowIp = process.env.BANNEDIPS
@@ -44,6 +45,7 @@ server.use("/", booksRoute);
 server.use("/", CommentsRoute);
 server.use("/", emailRoute);
 server.use("/", googleRoute);
+server.use("/", githubRoute);
 server.use(badRequestHandler);
 server.use(routeNotFoundMiddleWare);
 //server.use(genericErrorHandler);
