@@ -1,7 +1,7 @@
 export const navLinks = [
     { to: '/', text: 'Home' },
-    { to: '/about', text: 'About' },
-    { to: '/bookDay', text: 'Book of the Day' },
+    { to: '/about', text: 'Registration' },
+    { to: '/bookDay', text: 'Book Creation' },
     { to: '/contact', text: 'Contact' },
     { to: '/card', text: 'Buy' },
 ]

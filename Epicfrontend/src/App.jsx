@@ -115,40 +115,27 @@ import GithubRedirect from './pages/GithubRedirect/GithubRedirect'
 
 const App = () => {
     return (
-        <BrowserRouter>
-            <Routes>
-                {/* Wrappa solo le rotte HomePage e BookDetails con CartProvider */}
-                <Route
-                    exact
-                    path="/"
-                    element={
-                        <CartProvider>
-                            <HomePage />
-                        </CartProvider>
-                    }
-                />
-                <Route path="/about" element={<About />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/homepage" element={<Navigate to="/" />} />
-                <Route path="/success" element={<GithubRedirect />} />
+        <CartProvider>
+            <BrowserRouter>
+                <Routes>
+                    {/* Wrappa solo le rotte HomePage e BookDetails con CartProvider */}
+                    <Route exact path="/" element={<HomePage />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/homepage" element={<Navigate to="/" />} />
+                    <Route path="/success" element={<GithubRedirect />} />
 
-                {/* Rotte protette */}
-                <Route element={<ProtectedRoutes />}>
-                    <Route path="/card" element={<Cart />} />
-                    <Route path="/bookDay" element={<BookDay />} />
-                    <Route path="/contact" element={<ContactPage />} />
-                    <Route
-                        path="/book/:bookId"
-                        element={
-                            <CartProvider>
-                                <BookDetails />
-                            </CartProvider>
-                        }
-                    />
-                </Route>
-                <Route path="*" element={<PageError />} />
-            </Routes>
-        </BrowserRouter>
+                    {/* Rotte protette */}
+                    <Route element={<ProtectedRoutes />}>
+                        <Route path="/card" element={<Cart />} />
+                        <Route path="/bookDay" element={<BookDay />} />
+                        <Route path="/contact" element={<ContactPage />} />
+                        <Route path="/book/:bookId" element={<BookDetails />} />
+                    </Route>
+                    <Route path="*" element={<PageError />} />
+                </Routes>
+            </BrowserRouter>
+        </CartProvider>
     )
 }
 

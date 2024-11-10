@@ -31,8 +31,7 @@ console.log("Variabili di ambiente caricate:", {
 });
 
 server.use("/uploads", express.static(path.join(__dirname, "/uploads")));
-server.use("/", productsBuy);
-server.use("/", stripe);
+
 server.use(express.json());
 server.use(cors());
 
@@ -44,6 +43,7 @@ server.use("/", loginRoute);
 server.use("/", booksRoute);
 server.use("/", CommentsRoute);
 server.use("/", emailRoute);
+server.use("/", productsBuy);
 server.use("/", googleRoute);
 server.use("/", githubRoute);
 server.use(badRequestHandler);

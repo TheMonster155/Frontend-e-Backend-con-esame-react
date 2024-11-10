@@ -298,9 +298,6 @@ const AllComments = ({ _id }) => {
             if (response.ok) {
                 const result = await response.json()
                 setComments(result.comments || [])
-            } else {
-                console.log('Error fetching comments:', response.status)
-                Swal.fire('Error', 'Unable to fetch comments', 'error')
             }
         } catch (error) {
             console.log(error)

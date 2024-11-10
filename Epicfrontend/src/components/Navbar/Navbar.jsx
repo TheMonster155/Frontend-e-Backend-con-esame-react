@@ -114,12 +114,6 @@ const NavbarCustom = () => {
                         }}
                         handleCloseLogin={handleCloseLogin} // Passa la funzione di chiusura
                     />
-                    <LoginForm
-                        onLogin={(userData) => {
-                            login(userData)
-                            handleCloseLogin()
-                        }}
-                    />
                 </Modal.Body>
             </Modal>
 

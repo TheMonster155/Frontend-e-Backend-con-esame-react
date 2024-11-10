@@ -5,10 +5,11 @@ import { Container, Form, Button } from 'react-bootstrap'
 //TODO: AGGIUGERE UNA ICONA A GIT E GOOGLE
 const Login = ({ onLogin, handleCloseLogin }) => {
     const [formData, setFormData] = useState({})
+    const [errorMessage, setErrorMessage] = useState(null)
     const [showLogin, setShowLogin] = useState(true)
-    //const handleClose = () => {
-    //   setShowLogin(false)
-    //  }
+    const handleClose = () => {
+        setShowLogin(false)
+    }
     const navigate = useNavigate()
     const location = useLocation()
     const { login } = useUserContext()
@@ -51,13 +52,16 @@ const Login = ({ onLogin, handleCloseLogin }) => {
                 loginSuccess(data.token, data.user)
 
                 login(data.user)
-                //handleClose()
-                handleCloseLogin()
+                handleClose()
+                if (handleCloseLogin) {
+                    handleCloseLogin()
+                }
 
                 const redirectTo = location.state?.from || '/'
                 navigate(redirectTo)
             } else {
                 const errorData = await response.json()
+                setErrorMessage('Password o email errata. Riprova.')
                 console.log(`Error: ${errorData.message}`)
             }
         } catch (error) {
@@ -80,6 +84,11 @@ const Login = ({ onLogin, handleCloseLogin }) => {
         <Container className="d-flex justify-content-center align-items-center min-vh-100">
             <div className="w-100" style={{ maxWidth: '400px' }}>
                 <h2 className="text-center mb-4">Accedi al tuo account</h2>
+                {errorMessage && (
+                    <p variant="danger" className="text-center">
+                        {errorMessage}
+                    </p>
+                )}
                 <Form onSubmit={onSubmit}>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Email</Form.Label>
