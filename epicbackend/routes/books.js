@@ -8,7 +8,6 @@ const upload = require("../middlewere/uploadsMutter");
 const cloud = require("../middlewere/uploadsCloudinary");
 const validateBookId = require("../middlewere/validateBookId"); // Assicurati che il percorso sia corretto
 
-// Route to get paginated books
 books.get("/books", async (req, res, next) => {
   const { page = 1, pageSize = 10 } = req.query;
   try {
@@ -44,7 +43,6 @@ books.get("/books", async (req, res, next) => {
   }
 });
 
-// Route to get books by title with pagination
 books.get("/books/title/:title", async (req, res, next) => {
   const { title } = req.params;
   const { page = 1, pageSize = 10 } = req.query;
@@ -91,8 +89,6 @@ books.get("/books/title/:title", async (req, res, next) => {
   }
 });
 
-// Route to create a new book
-
 books.post("/books/create", [validateBookBody], async (req, res, next) => {
   console.log("Dati ricevuti per la creazione del libro:", req.body);
   const { title, img, price, category, asin } = req.body;
@@ -117,7 +113,7 @@ books.post("/books/create", [validateBookBody], async (req, res, next) => {
     next(error);
   }
 });
-// Route to get a book by ID
+
 books.get("/books/id/:id", validateBookId, async (req, res, next) => {
   const { id } = req.params;
 
@@ -137,10 +133,10 @@ books.get("/books/id/:id", validateBookId, async (req, res, next) => {
       book,
     });
   } catch (error) {
-    next(error); // Pass the error to the error handling middleware
+    next(error);
   }
 });
-// Route to update a book
+
 books.patch("/books/update/:id", async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
@@ -195,8 +191,8 @@ books.delete("/books/delete/:id", async (req, res, next) => {
 
 books.post("/books/upload", upload.single("img"), async (req, res, next) => {
   try {
-    const url = `${req.protocol}://${req.get("host")}`; // http o https = protocol :// host
-    const imgUrl = req.file.filename; // /uploads/nomefile-asdasfdsadfgsdfg.jpg
+    const url = `${req.protocol}://${req.get("host")}`;
+    const imgUrl = req.file.filename;
     res.status(200).json({ img: `${url}/uploads/${imgUrl}` });
   } catch (error) {
     next(error);
@@ -214,7 +210,7 @@ books.post(
     }
   }
 );
-// Rotta per gli admin ( scrip aggiornare il moddello book con l agggiunta del commento )
+
 books.patch("/books/updateModel", async (req, res, next) => {
   try {
     const result = await BooksModel.updateMany(

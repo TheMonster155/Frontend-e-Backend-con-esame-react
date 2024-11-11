@@ -50,7 +50,6 @@ comments.post("/comments/create", async (req, res, next) => {
   const { rate, comment, user, book } = req.body;
   console.log("Request Body:", req.body);
 
-  // Controlla se l'ID dell'utente è fornito
   if (!user) {
     return res.status(400).send({
       statusCode: 400,
@@ -58,7 +57,6 @@ comments.post("/comments/create", async (req, res, next) => {
     });
   }
 
-  // Verifica se l'ID del libro è fornito
   if (!book) {
     return res.status(400).send({
       statusCode: 400,
@@ -85,7 +83,7 @@ comments.post("/comments/create", async (req, res, next) => {
 });
 
 comments.patch("/comments/update/:commentsId", async (req, res, next) => {
-  const { commentsId } = req.params; // Cambia da commentId a commentsId per coerenza
+  const { commentsId } = req.params;
 
   if (!commentsId) {
     return res.status(404).send({
@@ -95,7 +93,7 @@ comments.patch("/comments/update/:commentsId", async (req, res, next) => {
   }
 
   try {
-    const commentExist = await CommentsModel.findById(commentsId); // Cambia commentId in commentsId
+    const commentExist = await CommentsModel.findById(commentsId);
 
     if (!commentExist) {
       return res.status(404).send({
@@ -104,22 +102,20 @@ comments.patch("/comments/update/:commentsId", async (req, res, next) => {
       });
     }
 
-    const updateCommentData = req.body; // Assicurati di avere i dati di aggiornamento qui
-    const option = { new: true }; // Restituisce il commento aggiornato
+    const updateCommentData = req.body;
+    const option = { new: true };
 
-    // Aggiorna il commento e restituisce il risultato
     const result = await CommentsModel.findByIdAndUpdate(
       commentsId,
       updateCommentData,
       option
     );
 
-    // Invia la risposta al client
     if (result) {
       res.status(200).send({
         statusCode: 200,
         message: "Comment updated successfully",
-        comment: result, // Restituisce il commento aggiornato
+        comment: result,
       });
     } else {
       res.status(404).send({
