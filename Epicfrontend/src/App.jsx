@@ -13,6 +13,7 @@ import Login from './pages/Login/Login'
 import Cart from './pages/Card/Card'
 import ProtectedRoutes from './Middwlwers/ProtectRoutes'
 import { CartProvider } from './components/context/CardContext'
+import SuccessLogin from './pages/SuccessLogin/SuccessLogin'
 
 
 const App = () => {
@@ -25,7 +26,7 @@ const App = () => {
                     <Route path="/about" element={<About />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/homepage" element={<Navigate to="/" />} />
-              
+                    <Route path="/success" element={<SuccessLogin />} />
                     {/* Rotte protette */}
                     <Route element={<ProtectedRoutes />}>
                         <Route path="/card" element={<Cart />} />

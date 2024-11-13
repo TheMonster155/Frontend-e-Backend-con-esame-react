@@ -1,11 +1,14 @@
+
 const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const google = express.Router();
-require("dotenv").config();
-const UserModel = require("../models/Usersmodel");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
+
+const UserModel = require("../models/Usersmodel");
+
 google.use(
   session({
     secret: process.env.GOOGLE_CLIENT_SECRET,
@@ -30,10 +33,27 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL:
-        "https://backend-con-esame-react.onrender.com/auth/google/callback",
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
+      try {
+        const user = await UserModel.findOne({ email: profile._json.email });
+
+        if (!user) {
+          const { _json: user } = profile;
+          const userToSave = new UserModel({
+            name: user.given_name,
+            surname: user.family_name,
+            email: user.email,
+            dob: new Date(),
+            password: "123456789",
+            username: `${user.given_name}_${user.family_name}`,
+          });
+          user = await userToSave.save();
+        }
+      } catch (error) {
+        console.log(error);
+      }
       return done(null, profile);
     }
   )
@@ -43,114 +63,41 @@ google.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["email", "profile"] })
 );
-/*
+
+
+
+
 google.get(
   "/auth/google/callback",
-
   passport.authenticate("google", { failureRedirect: "/" }),
   (req, res) => {
     const user = req.user;
-    const googleToken = jwt.sign(user, process.env.JWT_SECRET);
+    const tokenPayload = {
+      name: user.name,
+      surname: user.surname,
+      email: user.email,
+      _id: user._id,
+    };
 
+    const token = jwt.sign(tokenPayload, process.env.JWT_SECRET);
     const redirectUrl = `${
       process.env.FRONTEND_URL
-    }/success?token=${encodeURIComponent(JSON.stringify(googleToken))}`;
-    res.redirect(redirectUrl);
-  }
-);*/
-google.get(
-  "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "/" }),
-  (req, res) => {
-    const user = req.user;
-    const googleToken = jwt.sign(user, process.env.JWT_SECRET);
-
-    // Non convertire in JSON, passalo come stringa
-    const redirectUrl = `${process.env.FRONTEND_URL}/success?token=${googleToken}`;
-    res.redirect(redirectUrl);
+    }/success?token=${encodeURIComponent(token)}`;
+    res.redirect(redirectUrl); // Reindirizza alla pagina con il token
   }
 );
 
-module.exports = google;
-
-/*
-fatto com marco
-const express = require("express");
-const session = require("express-session");
-const passport = require("passport");
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const google = express.Router();
-require("dotenv").config();
-const UserModel = require("../models/Usersmodel");
-const jwt = require("jsonwebtoken");
-
-google.use(
-  session({
-    secret: process.env.GOOGLE_CLIENT_SECRET,
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-
-google.use(passport.initialize());
-google.use(passport.session());
-
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL:
-        "https://backend-con-esame-react.onrender.com/auth/google/callback",
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      let user = await UserModel.findOne({ googleId: profile.id });
-      if (!user) {
-        user = await UserModel.create({
-          googleId: profile.id,
-          name: profile.displayName,
-          email: profile.emails[0].value,
-          avatar: profile.photos[0].value,
-        });
+google.get("/logout", (req, res) => {
+  req.logout(() => {
+    req.session.destroy((err) => {
+      if (err) {
+        console.log("Errore durante la distruzione della sessione:", err);
+        return res.redirect("/");
       }
-      return done(null, user);
-    }
-  )
-);
-
-// Modifica l'autenticazione per disabilitare la gestione delle sessioni
-google.get(
-  "/auth/google",
-  passport.authenticate("google", {
-    scope: ["profile", "email"],
-    session: false,
-  })
-);
-
-google.get(
-  "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "/", session: false }),
-  (req, res) => {
-    const user = req.user;
-    const googleToken = jwt.sign(
-      { id: user._id, name: user.name, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
-
-    const redirectUrl = `${
-      process.env.FRONTEND_URL
-    }/success?token=${encodeURIComponent(googleToken)}`;
-    res.redirect(redirectUrl);
-  }
-);
+      res.clearCookie("connect.sid"); // Cancella il cookie della sessione
+      res.redirect(`${process.env.FRONTEND_URL}/login`); // Reindirizza alla pagina di login sul frontend
+    });
+  });
+});
 
 module.exports = google;
-*/
