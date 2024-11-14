@@ -1,0 +1,18 @@
+Ciao marco mi scuso se il mio lavoro non e perfetto ma con il viaggio e il resto non ho avuto molto tempo a disposizione , questo e il massimo che sono riuscito a fare con il tempo a disposizione che avevo, 
+ Le cose che macano: strpe, login con google che in localhost e in vercel, vercel login con goolge 
+
+IL login e registrazione  locale   e con render   * vercel  host funziona bene
+ecco due account da prova 
+casa@info.it 123456789
+mario@info.it 123456780
+
+il login con google funzioana solo locale, ma in redner da errore 400
+ 
+una volta scrtta un email  e un testo in contacts   le viene inviata una email con il testo scritto
+anche la creazio del libro funziona bene, potrebbe dare problemi la immagine se il testo e un conteuto vuoto, se da un porblemala prego di rifare una immagiane con dei nuemeri o parole
+
+anche il carello funziona ma senza stripe
+
+anche la bara di ricerca funziona
+
+se va in dettagli delle card se un login le fa la richiesta del login e la manda nella pagina,  le modiche o la eliminazione dei commenti   lo puo fare solo che a il login del commento 
