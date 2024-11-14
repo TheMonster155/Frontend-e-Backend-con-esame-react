@@ -1,30 +1,38 @@
 
-import { useEffect } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const SuccessLogin = () => {
-    const location = useLocation()
-    const navigate = useNavigate()
-
-    
+    const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const searchTokenParan = new URLSearchParams(location.search)
-        const token = searchTokenParan.get("token")
+        
+        const searchTokenParam = new URLSearchParams(location.search);
+        const token = searchTokenParam.get("token");
+
         if (token) {
-            
-            localStorage.setItem('Auth', JSON.stringify(token))
+            // Salva il token in localStorage
+            console.log("Token ricevuto:", token);  
+            localStorage.setItem('Auth', token); 
+
+            // va alla home page 
             setTimeout(() => {
-                navigate('/')
-            }, 5000)
+                navigate('/');
+            }, 2000);
         }
-    }, [location, navigate])
+    }, [location, navigate]);
+
     return (
         <div className="container">
             <div className="row">
-                <div className="col">ti sei loggato</div>
+                <div className="col">
+                    Ti sei loggato con successo. Verrai reindirizzato...
+                </div>
             </div>
         </div>
-    )
-}
-export default SuccessLogin
+    );
+};
+
+export default SuccessLogin;

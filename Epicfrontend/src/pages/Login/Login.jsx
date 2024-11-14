@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useUserContext } from '../../components/context/UserContext'
 import { Container, Form, Button } from 'react-bootstrap'
-//TODO: AGGIUGERE UNA ICONA A GIT E GOOGLE
+
 const Login = ({ onLogin, handleCloseLogin }) => {
     const [formData, setFormData] = useState({})
     const [errorMessage, setErrorMessage] = useState(null)
@@ -14,6 +14,9 @@ const Login = ({ onLogin, handleCloseLogin }) => {
     const location = useLocation()
     const { login } = useUserContext()
 
+
+
+      
     const handlerInput = (event) => {
         const { name, value } = event.target
         setFormData({
@@ -48,7 +51,7 @@ const Login = ({ onLogin, handleCloseLogin }) => {
             if (response.ok) {
                 const data = await response.json()
 
-                // Usa la funzione loginSuccess per memorizzare il token e i dati utente
+                
                 loginSuccess(data.token, data.user)
 
                 login(data.user)
@@ -68,11 +71,7 @@ const Login = ({ onLogin, handleCloseLogin }) => {
             console.log(error)
         }
     }
-    /*
-    if (!showLogin) {
-        return null
-    }
-*/
+ 
     const redirectToGoogle = () => {
         window.location.href = `${import.meta.env.VITE_SERVER_BASE_URL}/auth/google`
     }

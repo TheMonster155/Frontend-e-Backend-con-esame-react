@@ -35,14 +35,15 @@ const ContactPage = () => {
             setUserEmail('')
             setMessage('')
 
-            // Mostra il messaggio di successo con SweetAlert
+        +
             await Swal.fire({
                 icon: 'success',
                 title: 'Messaggio inviato!',
                 text: 'Il tuo messaggio è stato inviato con successo.',
             })
 
-            // Reindirizza alla homepage
+          
+            
             window.location.href = '/'
         } catch (error) {
             console.error("Errore nell'invio del messaggio:", error)

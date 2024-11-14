@@ -110,9 +110,9 @@ const NavbarCustom = () => {
                     <LoginForm
                         onLogin={(userData) => {
                             login(userData)
-                            handleCloseLogin() // Chiudi il modale dopo il login
+                            handleCloseLogin() 
                         }}
-                        handleCloseLogin={handleCloseLogin} // Passa la funzione di chiusura
+                        handleCloseLogin={handleCloseLogin} 
                     />
                 </Modal.Body>
             </Modal>

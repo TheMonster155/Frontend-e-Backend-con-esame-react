@@ -38,7 +38,7 @@ login.post("/login", async (request, response) => {
     );
 
     response
-      .header("authorization", userToken)
+      .header("Auth", userToken)
       .status(200)
       .send({
         statusCode: 200,

@@ -1,4 +1,5 @@
 
+
 const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
@@ -37,24 +38,25 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const user = await UserModel.findOne({ email: profile._json.email });
+        let user = await UserModel.findOne({ email: profile._json.email });
 
         if (!user) {
-          const { _json: user } = profile;
+          const { _json: googleUser } = profile;
           const userToSave = new UserModel({
-            name: user.given_name,
-            surname: user.family_name,
-            email: user.email,
+            name: googleUser.given_name,
+            surname: googleUser.family_name,
+            email: googleUser.email,
             dob: new Date(),
             password: "123456789",
-            username: `${user.given_name}_${user.family_name}`,
+            username: `${googleUser.given_name}_${googleUser.family_name}`,
           });
           user = await userToSave.save();
         }
+        return done(null, user);
       } catch (error) {
         console.log(error);
+        return done(error, null);
       }
-      return done(null, profile);
     }
   )
 );
@@ -64,14 +66,13 @@ google.get(
   passport.authenticate("google", { scope: ["email", "profile"] })
 );
 
-
-
-
 google.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/" }),
   (req, res) => {
     const user = req.user;
+    
+    // Costruzione del payload per il token JWT
     const tokenPayload = {
       name: user.name,
       surname: user.surname,
@@ -80,9 +81,8 @@ google.get(
     };
 
     const token = jwt.sign(tokenPayload, process.env.JWT_SECRET);
-    const redirectUrl = `${
-      process.env.FRONTEND_URL
-    }/success?token=${encodeURIComponent(token)}`;
+    const redirectUrl = `${process.env.FRONTEND_URL}/success?token=${encodeURIComponent(token)}`;
+    
     res.redirect(redirectUrl); // Reindirizza alla pagina con il token
   }
 );
